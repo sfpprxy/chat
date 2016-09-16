@@ -1,7 +1,7 @@
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.AbstractList;
 
 public class Server {
 
@@ -11,6 +11,10 @@ public class Server {
             while(true) {
                 Socket s = ss.accept();
                 System.out.println("a client connected!");
+                DataInputStream dis = new DataInputStream(s.getInputStream());
+                String msg = dis.readUTF();
+                System.out.println(msg);
+                dis.close();
             }
         } catch (IOException e) {
             e.printStackTrace();

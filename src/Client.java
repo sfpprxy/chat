@@ -6,11 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 public class Client extends Frame{
 
+    Socket s = null;
+    DataOutputStream dos = null;
     TextField sendField = new TextField();
     TextArea chatBoard = new TextArea();
 
@@ -37,7 +40,8 @@ public class Client extends Frame{
 
     public void connect() {
         try {
-            Socket s = new Socket("127.0.0.1", 8888);
+            s = new Socket("127.0.0.1", 8888);
+            dos = new DataOutputStream(s.getOutputStream());
             System.out.println("connected!");
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,6 +55,12 @@ public class Client extends Frame{
             String msg = sendField.getText().trim();
             chatBoard.setText(msg);
             sendField.setText("");
+            try {
+                dos.writeUTF(msg);
+                dos.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 }
