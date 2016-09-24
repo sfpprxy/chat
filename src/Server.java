@@ -6,14 +6,21 @@ import java.net.Socket;
 public class Server {
 
     public static void main(String[] foo){
+        boolean isStarted = false;
         try {
             ServerSocket ss = new ServerSocket(8888);
-            while(true) {
+            isStarted = true;
+            while(isStarted) {
+                boolean isConnected = false;
                 Socket s = ss.accept();
                 System.out.println("a client connected!");
+                isConnected = true;
                 DataInputStream dis = new DataInputStream(s.getInputStream());
-                String msg = dis.readUTF();
-                System.out.println(msg);
+                // Fix: Server stop when client exit without sending a msg
+                while (isConnected) {
+                    String msg = dis.readUTF();
+                    System.out.println(msg);
+                }
                 dis.close();
             }
         } catch (IOException e) {
