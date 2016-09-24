@@ -30,6 +30,7 @@ public class Client extends Frame{
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                disconnect();
                 System.exit(0);
             }
         });
@@ -43,6 +44,15 @@ public class Client extends Frame{
             s = new Socket("127.0.0.1", 8888);
             dos = new DataOutputStream(s.getOutputStream());
             System.out.println("connected!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void disconnect() {
+        try {
+            dos.close();
+            s.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
