@@ -58,6 +58,7 @@ public class Client extends Frame{
     public void disconnect() {
         try {
             dos.close();
+            dis.close();
             s.close();
         } catch (IOException e) {
             e.printStackTrace();

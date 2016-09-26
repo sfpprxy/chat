@@ -61,18 +61,20 @@ public class Server {
             try {
                 dos.writeUTF(msg);
             } catch (IOException e) {
-                e.printStackTrace();
+                clients.remove(this);
+                System.out.println("a client quit");
             }
         }
 
         @Override
         public void run() {
+            ClientThread c;
             try {
                 while (isConnected) {
                     String msg = dis.readUTF();
                     System.out.println(msg);
                     for (int i = 0; i < clients.size(); i++) {
-                        ClientThread c = clients.get(i);
+                        c = clients.get(i);
                         c.send(msg);
                     }
                 }
